@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:rick_and_morty/colors.dart';
 import 'package:rick_and_morty/pages/stores/home.store.dart';
+import 'package:rick_and_morty/widgets/character_grid_card.widget.dart';
+import 'package:rick_and_morty/widgets/character_list_card.widget.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -12,6 +14,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final store = HomeStore();
   bool isGrid = false;
+  Color cardColors = Colors.white;
 
   @override
   void initState() {
@@ -86,38 +89,18 @@ class _HomePageState extends State<HomePage> {
                           childAspectRatio: 2 / 3,
                         ),
                         itemCount: store.characters.length,
-                        itemBuilder: (context, index) => Container(
-                          decoration: BoxDecoration(
-                            color: Colors.grey[800],
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Center(
-                            child: Text(
-                              store.characters[index].name,
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          ),
-                        ),
+                        itemBuilder: (context, index) {
+                          final character = store.characters[index];
+
+                          return CharacterGridCard(character: character);
+                        },
                       )
                     : ListView.builder(
                         itemCount: store.characters.length,
-                        itemBuilder: (context, index) => Container(
-                          margin: EdgeInsets.only(bottom: 10),
-                          decoration: BoxDecoration(
-                            color: Colors.grey[800],
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Center(
-                            heightFactor: 4,
-                            child: Padding(
-                              padding: EdgeInsets.all(10),
-                              child: Text(
-                                store.characters[index].name,
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            ),
-                          ),
-                        ),
+                        itemBuilder: (context, index) {
+                          final character = store.characters[index];
+                          return CharacterListCard(character: character);
+                        },
                       ),
               ),
             ],
