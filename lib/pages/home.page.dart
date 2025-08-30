@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rick_and_morty/colors.dart';
+import 'package:rick_and_morty/pages/stores/home.store.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -9,17 +10,14 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final store = HomeStore();
   bool isGrid = false;
-  final List<String> personagens = [
-    'Rick Sanchez',
-    'Morty Smith',
-    'Summer Smith',
-    'Beth Smith',
-    'Jerry Smith',
-    'Birdperson',
-    'Squanchy',
-    'Mr. Meeseeks',
-  ];
+
+  @override
+  void initState() {
+    store.loadCharacters();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -87,7 +85,7 @@ class _HomePageState extends State<HomePage> {
                           mainAxisSpacing: 10,
                           childAspectRatio: 2 / 3,
                         ),
-                        itemCount: personagens.length,
+                        itemCount: store.characters.length,
                         itemBuilder: (context, index) => Container(
                           decoration: BoxDecoration(
                             color: Colors.grey[800],
@@ -95,14 +93,14 @@ class _HomePageState extends State<HomePage> {
                           ),
                           child: Center(
                             child: Text(
-                              personagens[index],
+                              store.characters[index].name,
                               style: TextStyle(color: Colors.white),
                             ),
                           ),
                         ),
                       )
                     : ListView.builder(
-                        itemCount: personagens.length,
+                        itemCount: store.characters.length,
                         itemBuilder: (context, index) => Container(
                           margin: EdgeInsets.only(bottom: 10),
                           decoration: BoxDecoration(
@@ -114,7 +112,7 @@ class _HomePageState extends State<HomePage> {
                             child: Padding(
                               padding: EdgeInsets.all(10),
                               child: Text(
-                                personagens[index],
+                                store.characters[index].name,
                                 style: TextStyle(color: Colors.white),
                               ),
                             ),
