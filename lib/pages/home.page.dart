@@ -3,6 +3,7 @@ import 'package:rick_and_morty/colors.dart';
 import 'package:rick_and_morty/pages/stores/home.store.dart';
 import 'package:rick_and_morty/widgets/character_grid_card.widget.dart';
 import 'package:rick_and_morty/widgets/character_list_card.widget.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -15,11 +16,29 @@ class _HomePageState extends State<HomePage> {
   final store = HomeStore();
   bool isGrid = false;
   Color cardColors = Colors.white;
+  final scrollController = ScrollController();
 
   @override
   void initState() {
     store.loadCharacters();
+    scrollController.addListener(scrollListener);
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    scrollController.dispose();
+    super.dispose();
+  }
+
+  void scrollListener() {
+    scrollController.addListener(() {
+      if (scrollController.offset >=
+              scrollController.position.maxScrollExtent &&
+          !scrollController.position.outOfRange) {
+        store.loadCharacters();
+      }
+    });
   }
 
   @override
@@ -79,29 +98,62 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
               SizedBox(height: 5),
-              Expanded(
-                child: isGrid
-                    ? GridView.builder(
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          crossAxisSpacing: 10,
-                          mainAxisSpacing: 10,
-                          childAspectRatio: 2 / 3,
-                        ),
-                        itemCount: store.characters.length,
-                        itemBuilder: (context, index) {
-                          final character = store.characters[index];
+              Observer(
+                builder: (context) {
+                  return Expanded(
+                    child: isGrid
+                        ? GridView.builder(
+                            controller: scrollController,
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2,
+                                  childAspectRatio: 2 / 3,
+                                ),
+                            itemCount: store.characters.length,
+                            itemBuilder: (context, index) {
+                              if (index < store.characters.length) {
+                                final character = store.characters[index];
 
-                          return CharacterGridCard(character: character);
-                        },
-                      )
-                    : ListView.builder(
-                        itemCount: store.characters.length,
-                        itemBuilder: (context, index) {
-                          final character = store.characters[index];
-                          return CharacterListCard(character: character);
-                        },
-                      ),
+                                return InkWell(
+                                  borderRadius: BorderRadius.circular(10),
+                                  onTap: () {
+                                    // Handle tap
+                                  },
+                                  child: CharacterGridCard(
+                                    character: character,
+                                  ),
+                                );
+                              } else {
+                                return Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              }
+                            },
+                          )
+                        : ListView.builder(
+                            controller: scrollController,
+                            itemCount: store.characters.length,
+                            itemBuilder: (context, index) {
+                              if (index < store.characters.length) {
+                                final character = store.characters[index];
+                                return InkWell(
+                                  onTap: () {
+                                    // Handle tap
+                                  },
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: CharacterListCard(
+                                    character: character,
+                                  ),
+                                );
+                              } else {
+                                return Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              }
+                            },
+                          ),
+                  );
+                },
               ),
             ],
           ),

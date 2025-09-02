@@ -44,7 +44,7 @@ class _CharacterListCardState extends State<CharacterListCard> {
     return Card(
       elevation: 4,
       child: AnimatedContainer(
-        duration: Duration(milliseconds: 300),
+        duration: const Duration(milliseconds: 300),
         decoration: BoxDecoration(
           color: backgroundColor,
           borderRadius: BorderRadius.circular(10),
@@ -54,31 +54,35 @@ class _CharacterListCardState extends State<CharacterListCard> {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Column(
-                children: [
-                  Image.network(
-                    widget.character.image,
-                    height: 100,
-                    width: 100,
-                    fit: BoxFit.cover,
-                  ),
-                ],
+              ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: Image.network(
+                  widget.character.image,
+                  height: 100,
+                  width: 100,
+                  fit: BoxFit.cover,
+                ),
               ),
-              SizedBox(width: 20.0),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    widget.character.name,
-                    style: TextStyle(
-                      color: primaryColor,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
+              const SizedBox(width: 20.0),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      widget.character.name,
+                      style: TextStyle(
+                        color: primaryColor,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
+                      softWrap: true,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8.0),
-                    child: Row(
+
+                    const SizedBox(height: 8),
+
+                    Row(
                       children: [
                         Container(
                           width: 10,
@@ -88,19 +92,26 @@ class _CharacterListCardState extends State<CharacterListCard> {
                             shape: BoxShape.circle,
                           ),
                         ),
-                        SizedBox(width: 8),
-                        Text(
-                          '${widget.character.status} - ${widget.character.species}',
-                          style: TextStyle(color: primaryColor),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Text(
+                            '${widget.character.status} - ${widget.character.species}',
+                            style: TextStyle(color: primaryColor),
+                            softWrap: true,
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ),
                       ],
                     ),
-                  ),
-                  Text(
-                    widget.character.gender,
-                    style: TextStyle(color: primaryColor),
-                  ),
-                ],
+
+                    const SizedBox(height: 4),
+
+                    Text(
+                      widget.character.gender,
+                      style: TextStyle(color: primaryColor),
+                    ),
+                  ],
+                ),
               ),
             ],
           ),

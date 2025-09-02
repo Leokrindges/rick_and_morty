@@ -10,9 +10,9 @@ class RickMortyApiService {
     dio = Dio(BaseOptions(baseUrl: 'https://rickandmortyapi.com/api'));
   }
 
-  Future<CharacterResponse> loadCharacters() async {
+  Future<CharacterResponse> loadCharacters({required int page}) async {
     try {
-      final response = await dio.get('/character');
+      final response = await dio.get('/character/?page=$page');
       if (response.statusCode != HttpStatus.ok) {
         throw Exception('Failed to load characters');
       }

@@ -11,6 +11,7 @@ class HomeStore = HomeStoreBase with _$HomeStore;
 // The store-class
 abstract class HomeStoreBase with Store {
   final _service = RickMortyApiService();
+  int page = 1;
   HomeStoreBase();
 
   @observable
@@ -22,7 +23,9 @@ abstract class HomeStoreBase with Store {
   @action
   Future<void> loadCharacters() async {
     isLoading = true;
-    final response = await _service.loadCharacters();
+    print('Loading page $page');
+    final response = await _service.loadCharacters(page: page);
+    page += 1;
     characters.addAll(response.results);
     isLoading = false;
   }
