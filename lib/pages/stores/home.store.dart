@@ -18,7 +18,26 @@ abstract class HomeStoreBase with Store {
   bool isLoading = false;
 
   @observable
+  String? search;
+
+  @observable
   ObservableList<Character> characters = <Character>[].asObservable();
+
+  @computed
+  List<Character> get filteredCharacters {
+    if (search == null || search!.isEmpty) {
+      return characters.toList();
+    }
+    final lowerSearch = search!.toLowerCase();
+    return characters
+        .where((c) => c.name.toLowerCase().contains(lowerSearch))
+        .toList();
+  }
+
+  @action
+  void setSearch(String? value) {
+    search = value;
+  }
 
   @action
   Future<void> loadCharacters() async {

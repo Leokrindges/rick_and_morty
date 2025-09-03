@@ -66,7 +66,7 @@ class _HomePageState extends State<HomePage> {
               ),
               SizedBox(height: 10),
               TextField(
-                onChanged: (value) => print(value),
+                onChanged: (value) => store.setSearch(value),
                 decoration: InputDecoration(
                   hintText: 'Nome ou identificador',
                   hintStyle: TextStyle(color: primaryColor),
@@ -109,10 +109,11 @@ class _HomePageState extends State<HomePage> {
                                   crossAxisCount: 2,
                                   childAspectRatio: 2 / 3,
                                 ),
-                            itemCount: store.characters.length,
+                            itemCount: store.filteredCharacters.length + 1,
                             itemBuilder: (context, index) {
-                              if (index < store.characters.length) {
-                                final character = store.characters[index];
+                              if (index < store.filteredCharacters.length) {
+                                final character =
+                                    store.filteredCharacters[index];
 
                                 return InkWell(
                                   borderRadius: BorderRadius.circular(10),
@@ -132,10 +133,11 @@ class _HomePageState extends State<HomePage> {
                           )
                         : ListView.builder(
                             controller: scrollController,
-                            itemCount: store.characters.length,
+                            itemCount: store.filteredCharacters.length + 1,
                             itemBuilder: (context, index) {
-                              if (index < store.characters.length) {
-                                final character = store.characters[index];
+                              if (index < store.filteredCharacters.length) {
+                                final character =
+                                    store.filteredCharacters[index];
                                 return InkWell(
                                   onTap: () {
                                     // Handle tap
