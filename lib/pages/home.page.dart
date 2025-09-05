@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rick_and_morty/colors.dart';
+import 'package:rick_and_morty/pages/details/detail.page.dart';
 import 'package:rick_and_morty/pages/stores/home.store.dart';
 import 'package:rick_and_morty/widgets/character_grid_card.widget.dart';
 import 'package:rick_and_morty/widgets/character_list_card.widget.dart';
@@ -118,7 +119,12 @@ class _HomePageState extends State<HomePage> {
                                 return InkWell(
                                   borderRadius: BorderRadius.circular(10),
                                   onTap: () {
-                                    // Handle tap
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            DetailPage(character: character),
+                                      ),
+                                    );
                                   },
                                   child: CharacterGridCard(
                                     character: character,
@@ -140,7 +146,12 @@ class _HomePageState extends State<HomePage> {
                                     store.filteredCharacters[index];
                                 return InkWell(
                                   onTap: () {
-                                    // Handle tap
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            DetailPage(character: character),
+                                      ),
+                                    );
                                   },
                                   borderRadius: BorderRadius.circular(10),
                                   child: CharacterListCard(

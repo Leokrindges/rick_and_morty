@@ -1,3 +1,6 @@
+import 'package:rick_and_morty/models/location.model.dart';
+import 'package:rick_and_morty/models/origin.model.dart';
+
 class Character {
   final int id;
   final String name;
@@ -6,6 +9,9 @@ class Character {
   final String type;
   final String gender;
   final String image;
+  final Origin origin;
+  final Location location;
+  final List<String> episodeUrls;
 
   Character({
     required this.id,
@@ -15,6 +21,9 @@ class Character {
     required this.type,
     required this.gender,
     required this.image,
+    required this.origin,
+    required this.location,
+    required this.episodeUrls,
   });
 
   factory Character.fromMap(Map<String, dynamic> map) {
@@ -26,6 +35,9 @@ class Character {
       type: map['type'] ?? '',
       gender: map['gender'] ?? '',
       image: map['image'] ?? '',
+      origin: Origin.fromMap(map['origin'] ?? {}),
+      location: Location.fromMap(map['location'] ?? {}),
+      episodeUrls: List<String>.from(map['episode'] ?? []),
     );
   }
 }
