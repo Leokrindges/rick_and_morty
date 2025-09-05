@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:rick_and_morty/colors.dart';
 import 'package:rick_and_morty/models/character.model.dart';
 import 'package:rick_and_morty/utils/color_utils.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class CharacterGridCard extends StatefulWidget {
   final Character character;
@@ -45,18 +46,25 @@ class _CharacterGridCardState extends State<CharacterGridCard> {
               style: TextStyle(color: primaryColor),
             ),
             SizedBox(height: 10),
-            Image.network(
-              widget.character.image,
-              height: 120,
-              width: 120,
-              fit: BoxFit.cover,
+            Hero(
+              tag: ValueKey(widget.character.id),
+              child: CachedNetworkImage(
+                imageUrl: widget.character.image,
+                fit: BoxFit.cover,
+                height: 120,
+                width: 120,
+              ),
             ),
             SizedBox(height: 10),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 12),
               child: Text(
                 widget.character.name,
-                style: TextStyle(color: primaryColor),
+                style: TextStyle(
+                  color: primaryColor,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
                 textAlign: TextAlign.center,
               ),
             ),

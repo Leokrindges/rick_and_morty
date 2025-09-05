@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:rick_and_morty/colors.dart';
 import 'package:rick_and_morty/models/character.model.dart';
 import 'package:rick_and_morty/utils/color_utils.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class CharacterListCard extends StatefulWidget {
   final Character character;
@@ -54,13 +55,13 @@ class _CharacterListCardState extends State<CharacterListCard> {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: Image.network(
-                  widget.character.image,
-                  height: 100,
-                  width: 100,
+              Hero(
+                tag: ValueKey(widget.character.id),
+                child: CachedNetworkImage(
+                  imageUrl: widget.character.image,
                   fit: BoxFit.cover,
+                  height: 120,
+                  width: 120,
                 ),
               ),
               const SizedBox(width: 20.0),
@@ -109,6 +110,15 @@ class _CharacterListCardState extends State<CharacterListCard> {
                     Text(
                       widget.character.gender,
                       style: TextStyle(color: primaryColor),
+                    ),
+                    Row(
+                      children: [
+                        Spacer(),
+                        Text(
+                          widget.character.id.toString(),
+                          style: TextStyle(color: primaryColor),
+                        ),
+                      ],
                     ),
                   ],
                 ),

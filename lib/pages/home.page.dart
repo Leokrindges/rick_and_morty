@@ -63,7 +63,11 @@ class _HomePageState extends State<HomePage> {
               SizedBox(height: 10),
               Text(
                 'Procure pelo seu personagem',
-                style: TextStyle(color: Colors.white, fontSize: 20),
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               SizedBox(height: 10),
               TextField(

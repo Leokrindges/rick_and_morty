@@ -12,7 +12,7 @@ class RickMortyApiService {
 
   Future<CharacterResponse> loadCharacters({required int page}) async {
     try {
-      final response = await dio.get('/character/?page=$page');
+      final response = await dio.get('/character?page=$page');
       if (response.statusCode != HttpStatus.ok) {
         throw Exception('Failed to load characters');
       }

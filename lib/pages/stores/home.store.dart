@@ -28,9 +28,12 @@ abstract class HomeStoreBase with Store {
     if (search == null || search!.isEmpty) {
       return characters.toList();
     }
-    final lowerSearch = search!.toLowerCase();
     return characters
-        .where((c) => c.name.toLowerCase().contains(lowerSearch))
+        .where(
+          (character) =>
+              character.name.toLowerCase().contains(search!.toLowerCase()) ||
+              character.id.toString().contains(search!),
+        )
         .toList();
   }
 
@@ -41,8 +44,8 @@ abstract class HomeStoreBase with Store {
 
   @action
   Future<void> loadCharacters() async {
+    if (isLoading) return;
     isLoading = true;
-    print('Loading page $page');
     final response = await _service.loadCharacters(page: page);
     page += 1;
     characters.addAll(response.results);
